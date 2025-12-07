@@ -1,0 +1,53 @@
+version: '3.9'
+services:
+  postgres:
+    image: timescale/timescaledb:latest-pg14
+    environment:
+      POSTGRES_PASSWORD: trading
+      POSTGRES_USER: trading
+      POSTGRES_DB: trading
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+      - ./infra/init_db.sql:/docker-entrypoint-initdb.d/init_db.sql
+    ports:
+      - "5432:5432"
+
+  ingest_market:
+    build: .
+    command: ["python", "-m", "services.ingest_market.main"]
+    environment:
+      INGEST_DB_DSN: postgresql+psycopg2://trading:trading@postgres:5432/trading
+      INGEST_DATA_SOURCE: mock
+    depends_on:
+      - postgres
+
+  regime_engine:
+    build: .
+    command: ["python", "-m", "services.regime_engine.main"]
+    environment:
+      REGIME_DB_DSN: postgresql+psycopg2://trading:trading@postgres:5432/trading
+    depends_on:
+      - postgres
+
+  risk_daemon:
+    build: .
+    command: ["python", "-m", "services.risk_daemon.main"]
+    environment:
+      RISK_DB_DSN: postgresql+psycopg2://trading:trading@postgres:5432/trading
+    volumes:
+      - ./config:/app/config
+    depends_on:
+      - postgres
+
+  api_gateway:
+    build: .
+    command: ["python", "-m", "services.api_gateway.main"]
+    environment:
+      API_DB_DSN: postgresql+psycopg2://trading:trading@postgres:5432/trading
+    ports:
+      - "8000:8000"
+    depends_on:
+      - postgres
+
+volumes:
+  pgdata:
