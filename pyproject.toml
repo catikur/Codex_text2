@@ -1,0 +1,31 @@
+[project]
+name = "trading-brain"
+version = "0.1.0"
+description = "Regime-aware trading system Phase 1"
+authors = [{name = "Quant Dev", email = "quant@example.com"}]
+readme = "README.md"
+requires-python = ">=3.11"
+dependencies = [
+  "pydantic>=2.6",
+  "pydantic-settings>=2.2",
+  "sqlalchemy>=2.0",
+  "psycopg2-binary>=2.9",
+  "alembic>=1.12",
+  "fastapi>=0.110",
+  "uvicorn>=0.29",
+  "pandas>=2.2",
+  "numpy>=1.26",
+  "prometheus-client>=0.20",
+  "pyyaml>=6.0",
+  "httpx>=0.27",
+]
+
+[project.optional-dependencies]
+test = [
+  "pytest>=7.4",
+  "pytest-asyncio>=0.23"
+]
+
+[build-system]
+requires = ["setuptools", "wheel"]
+build-backend = "setuptools.build_meta"

@@ -1,0 +1,18 @@
+risk_off:
+  gross_leverage_target: 0.4
+  net_beta_cap: 0.2
+  altcoin_exposure_cap: 0.15
+  enable_counterbook: true
+  notes: "Reduce exposure due to elevated risk"
+neutral:
+  gross_leverage_target: 0.8
+  net_beta_cap: 0.4
+  altcoin_exposure_cap: 0.25
+  enable_counterbook: false
+  notes: "Normal risk posture"
+risk_on:
+  gross_leverage_target: 1.2
+  net_beta_cap: 0.7
+  altcoin_exposure_cap: 0.35
+  enable_counterbook: false
+  notes: "Favorable conditions"
